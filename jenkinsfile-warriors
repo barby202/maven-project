@@ -1,0 +1,66 @@
+pipeline {
+    agent { 
+        label 'node1 || node2 || node3 || node4 || node5'
+         }
+         
+    stages {
+
+        stage('maven') {
+              agent {
+        docker { image 'maven:3.6.0-jdk-11-slim' }
+                    }
+        }
+        stage('clean') {
+            steps {
+                sh '''
+            mvn clean 
+                '''
+            }
+        }
+    
+    stage('compile') {
+            steps {
+                sh '''
+             mvn compile
+                '''
+            }
+        }
+
+        stage('test') {
+            steps {
+                sh '''
+             mvn test
+                '''
+            }
+        }
+
+        stage('package') {
+            steps {
+                sh '''
+            mvn package
+                '''
+            }
+        }
+
+        stage('verify') {
+            steps {
+                sh '''
+            mvn verify
+                '''
+            }
+        }
+
+        stage('install') {
+            steps {
+                sh '''
+              mvn install 
+                '''
+            }
+        }    
+    
+    
+    
+    
+    
+    }
+}
